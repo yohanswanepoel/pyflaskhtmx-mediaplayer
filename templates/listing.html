@@ -1,0 +1,55 @@
+
+<span class="d-block">
+    <a hx-get="/file_listing?current_path={{ current_path }}" hx-target="#listing-div" hx-swap="innerHTML">
+    {{ current_path }}
+</span>
+<span class="d-block">
+    <a hx-get="/file_listing?current_path={{ parent_path }}" hx-target="#listing-div" hx-swap="innerHTML"><--</a> 
+    <input type="search" 
+       name="filter" placeholder="Begin Typing To Filter" 
+       hx-post="/file_listing" 
+       hx-trigger="input changed delay:500ms, search" 
+       hx-target="#listing-div" 
+       hx-indicator=".htmx-indicator"
+       value="{{ filter_str }}"
+       id="filter">
+</span>
+
+</a>
+<div style="width: 380px; overflow-y: scroll; height:100%" class="overflow-auto">
+    <ul id="file_list" class="list-group">
+    {% for file in files %}
+        {% if file.isfile %}
+            <li id="{{ file.id }}" class="list-group-item bg-grey" hx-get="/play_file?current_path={{ current_path + "/" + file.name }}" hx-trigger="click" hx-on::after-request="set_active('{{ file.id }}')" hx-target="#content_window">{{ file.name }} - {{ file.size }} </li>
+        {% else %}
+            <li class="list-group-item bg-grey" hx-get="/file_listing?current_path={{ current_path + "/" + file.name }}" hx-trigger="click" hx-swap="innerHTML" hx-target="#listing-div"> {{ file.name }}/ </li>
+        {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<script>
+    window.onload = function() {
+        document.getElementById("filter").focus();
+    }
+
+    function set_active(file_id){
+        setClassOnListItems()
+        setClassOnActiveItem(file_id)
+    }
+
+    function setClassOnActiveItem(file_id){
+        //console.log(file_id)
+        const item = document.getElementById(file_id);
+        item.classList.add('active')
+    }
+    function setClassOnListItems() {
+        // Get all list items within the ul with id "myList"
+        const listItems = document.querySelectorAll('#file_list li');
+
+        // Loop through each list item and add the class
+        listItems.forEach(item => {
+            item.classList.remove('active');
+        });
+    } 
+</script>
