@@ -39,6 +39,25 @@
             updateHeight();
             $(window).on('resize', updateHeight);
         });
+        function set_active(file_id){
+            setClassOnListItems()
+            setClassOnActiveItem(file_id)
+        }
+
+        function setClassOnActiveItem(file_id){
+            //console.log(file_id)
+            const item = document.getElementById(file_id);
+            item.classList.add('active')
+        }
+        function setClassOnListItems() {
+            // Get all list items within the ul with id "myList"
+            const listItems = document.querySelectorAll('#file_list li');
+
+            // Loop through each list item and add the class
+            listItems.forEach(item => {
+                item.classList.remove('active');
+            });
+        } 
     </script>
     <style>
         body {
@@ -72,28 +91,9 @@
             <span class="navbar-toggler-icon"></span>
           </button>
     
-          <div class="navbar-collapse collapse" id="navbarsExample01" style="">
-            <ul class="navbar-nav me-auto mb-2">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-                <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-            </ul>
+          <div class="navbar-collapse collapse" id="navbarsExample01" >
             <form>
-              <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+              <span style="color: aliceblue;">Loop Time:</span> <input type="text" placeholder="5" aria-label="Loop Time" value="{{ loop_time }}">
             </form>
           </div>
         </div>
@@ -101,7 +101,7 @@
     
     <main>
         <div class="wrapper">
-            <div id="listing-div" class="toggled" style="height: {{ height }}px" hx-get="/file_listing" hx-trigger="load" hx-swap="innerHTML" class="overflow-auto"></div>
+            <div id="listing-div" class="toggled"style="height: {{ height }}px" hx-get="/file_listing" hx-trigger="load" hx-swap="innerHTML" class="overflow-auto"></div>
             <div id="content_window" class="container-fluid"> Big Media Player</div>
         </div>
     </main>

@@ -19,6 +19,20 @@ def get_file_size(file_path):
     else:
         return f"{size_bytes / (1024 * 1024 * 1024):.2f} GB"
 
+def find_next_item(listing, current_id):
+    # Create a list of just the ids
+    found = False
+    done = False
+    current_item = None
+    for item in listing:
+        if item['isfile']:
+            if found == True:
+                return item
+            if item['id'] == current_id:
+                found = True
+                current_item = item
+    return current_item
+
 def list_files(mypath, filter_str):
     listing = []
     matches = ["jpg", "jpeg", "mp4", "gif", "webp", "webm"]

@@ -18,7 +18,10 @@ window_height = 700
 image_suffixes = ("jpg", "jpeg", "gif", "webp")
 video_suffixes = ("mp4", "webm")
 # app = Flask(__name__, static_url_path="", static_folder="templates")
-global_current_path = "/"
+g_current_path = "/"
+g_file_list = []
+g_loop_time = 5
+g_current_file = ""
 
 @app.route("/")
 def index():
@@ -36,16 +39,28 @@ def send_image():
 
 @app.route("/play_file")
 def play_current_file():
-    global window_height
     request_path = request.args.get('current_path')
     index = request_path.rfind("/")+1
     file_name = request_path[index:].replace(" ","_").replace(".","_")
+    return play_file_return(request_path, file_name)
+
+@app.route("/next_file")
+def play_next_file():
+    global g_file_list
+    global g_current_file
+    next_file = utils.find_next_item(g_file_list, g_current_file)
+    return play_file_return(next_file['path'], next_file['id'])
+
+def play_file_return(request_path, file_id):
+    global g_current_file
+    global window_height
+    g_current_file = file_id
     if request_path.endswith(image_suffixes):
         img = Image.open(request_path) 
         # check if it is an image or video
-        return render_template("showimage.html", image=request_path, height=window_height, file_name=file_name)
+        return render_template("showimage.html", image=request_path, height=window_height, file_name=file_id)
     elif request_path.endswith(video_suffixes):
-        return render_template("playvideo.html", image=request_path, height=window_height, file_name=file_name)
+        return render_template("playvideo.html", image=request_path, height=window_height, file_name=file_id)
     else:
         abort(404)
 
@@ -58,11 +73,13 @@ def update_height():
 
 @app.route("/file_listing", methods=['POST','GET'])
 def get_file_listing():
-    global global_current_path
+    global g_current_path
+    global g_file_list
+    global g_loop_time
     filter_str = ""
     if request.method == 'POST':
         filter_str = request.values.get('filter')
-        current_path = global_current_path
+        current_path = g_current_path
     else:  # GET Method Code
         request_path = request.args.get('current_path')
         parent_path = "/"
@@ -80,10 +97,11 @@ def get_file_listing():
     if parent_path == "":
         parent_path = "/"
     current_path = current_path.replace("//","/")
-    global_current_path = current_path
+    g_current_path = current_path
     
     files = utils.list_files(current_path, filter_str)
-    return render_template("listing.html", files=files, current_path=current_path, parent_path=parent_path, filter_str=filter_str)
+    g_file_list = files
+    return render_template("listing.html", files=files, loop_time = g_loop_time, current_path=current_path, parent_path=parent_path, filter_str=filter_str)
 
 if __name__ == "__main__":
     app.run(debug=True)

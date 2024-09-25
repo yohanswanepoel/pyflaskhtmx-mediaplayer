@@ -1,3 +1,3 @@
 <!--img :height="{{ height }}"  style="width:100%; object-fit: contain" v-bind:src="fullpath(file)"-->    
 
-<img id="image_id" height="{{ height }}" style="max-width: 100%;  object-fit: contain"  src="{{ url_for('send_image', filename=image) }}">
+<img id="image_id" height="{{ height }}" style="max-width: 100%;  object-fit: contain" onload="set_active('{{ file_name }}')" src="{{ url_for('send_image', filename=image) }}">

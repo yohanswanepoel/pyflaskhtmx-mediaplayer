@@ -3,10 +3,17 @@
         controls ref="video" id="video">
     <source src="{{ url_for('send_image', filename=image) }}" type="video/mp4" >
 </video>
-<script>
+<script  >
     var promise = document.querySelector('video').play();
+    set_active('{{ file_name }}')
+
+    var vid = document.getElementById("video_id");
+    vid.onended = function() {
+        htmx.ajax('GET', '/next_file', {target:'#content_window', swap:'innerHTML'})
+    }; 
 
     if (promise !== undefined) {
+        
         promise.catch(error => {
             // Auto-play was prevented
             // Show a UI element to let the user manually start playback
