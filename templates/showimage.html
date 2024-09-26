@@ -9,6 +9,7 @@ hx-get="/next_file"
 hx-swap="innerHTML"
 style="max-width: 100%;  object-fit: contain" 
 onload="set_active('{{ file_name }}')" src="{{ url_for('send_image', filename=image) }}">
+<br>
 <span>
 {{ image }}
 </span>
