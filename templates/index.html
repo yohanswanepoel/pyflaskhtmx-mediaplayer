@@ -81,30 +81,45 @@
             width: 100%;
             align-items: stretch;
         }
+        .navbar-toggler-icon{
+            width: 20px !important;
+            height: 20px !important;
+        }
+        .navbar-toggler-icon{
+            height: 25px !important;
+        }
+
+        .btn-small:focus {
+            outline: 0;
+        }
+        .btn-small:hover {
+            outline: 0;
+        }
+
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark" aria-label="First navbar example">
+    <nav class="navbar navbar-dark bg-dark py-0" aria-label="Navbar">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Media Player</a>
-          <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+          <span>
+            <span class="navbar-brand">Player</span>
+            <button type="button" class="btn-small btn-dark dropdown-toggle" data-bs-target="#listing-div" data-bs-toggle="collapse">
+                <span>File Browser</span>
+            </button>
+          </span>
+          <div class="collapse" id="looptime_bar"  hx-get="/loop_time" hx-trigger="load" hx-swap="innerHTML" ></div>
+          <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#looptime_bar" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-    
-          <div class="navbar-collapse collapse" id="navbarsExample01" >
-            <form>
-              <span style="color: aliceblue;">Loop Time:</span> <input type="text" placeholder="5" aria-label="Loop Time" value="{{ loop_time }}">
-            </form>
           </div>
         </div>
       </nav>
     
     <main>
         <div class="wrapper">
-            <div id="listing-div" class="toggled"style="height: {{ height }}px" hx-get="/file_listing" hx-trigger="load" hx-swap="innerHTML" class="overflow-auto"></div>
-            <div id="content_window" class="container-fluid"> Big Media Player</div>
+            <div id="listing-div" class="collapse show" style="height: {{ height }}px" hx-get="/file_listing" hx-trigger="load" hx-swap="innerHTML" class="overflow-auto" aria-expanded="false"></div>
+            <div id="content_window" class="container-fluid"> Watch this space... </div>
         </div>
     </main>
-    
     </body>
 </html>

@@ -3,13 +3,18 @@
         controls ref="video" id="video">
     <source src="{{ url_for('send_image', filename=image) }}" type="video/mp4" >
 </video>
+<span>
+{{ image }}
+</span>
 <script  >
     var promise = document.querySelector('video').play();
     set_active('{{ file_name }}')
 
     var vid = document.getElementById("video_id");
     vid.onended = function() {
+        {% if loop_time|int > 0 %}
         htmx.ajax('GET', '/next_file', {target:'#content_window', swap:'innerHTML'})
+        {% endif %}
     }; 
 
     if (promise !== undefined) {
