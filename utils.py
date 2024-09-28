@@ -47,6 +47,7 @@ def list_files(mypath, filter_str):
                         id = item.replace(" ","_").replace(".","_")
                         listing.append(dict(id=id, name=item, path=item_path, size=size, isfile=True))
                 elif os.path.isdir(item_path):
-                    listing.append(dict(name=item, path=item_path, size=0, isfile=False))
-
-    return listing
+                    id = item.replace(" ","_").replace(".","_")
+                    listing.append(dict(id=id, name=item, path=item_path, size=0, isfile=False))
+    newlist = sorted(listing, key=lambda d: d['id'])
+    return newlist
