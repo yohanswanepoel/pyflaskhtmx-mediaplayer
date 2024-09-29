@@ -9,7 +9,10 @@ import logging
 
 
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='', 
+            static_folder='static',
+            template_folder='templates')
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)

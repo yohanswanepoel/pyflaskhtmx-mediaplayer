@@ -1,16 +1,18 @@
 
 
 <span class="d-block">
-    <input type="search" 
-       name="filter" placeholder="Begin Typing To Filter" 
-       hx-post="/file_listing" 
-       hx-trigger="input changed delay:500ms, search" 
-       hx-target="#listing-div" 
-       hx-indicator=".htmx-indicator"
-       value="{{ filter_str }}"
-       id="filter"> 
-    | <a class="btn-small" hx-get="/previous_file" hx-target="#content_window" hx-trigger="click" hx-swap="innerHTML">Prev</a>
-    | <a class="btn-small" hx-get="/next_file" hx-target="#content_window" hx-trigger="click" hx-swap="innerHTML">Next</a>
+    <div class="input-group input-group-sm mb-3">
+        <input type="search" class="form-control" style="width:100px"
+            name="filter" placeholder="Filter" 
+            hx-post="/file_listing" 
+            hx-trigger="input changed delay:500ms, search" 
+            hx-target="#listing-div" 
+            hx-indicator=".htmx-indicator"
+            value="{{ filter_str }}"
+            id="filter"> 
+        <button class="btn btn-small btn-outline-secondary" hx-get="/previous_file" hx-target="#content_window" hx-trigger="click" hx-swap="innerHTML">&laquo; Previous</button>
+        <button class="btn btn-small btn-outline-secondary" hx-get="/next_file" hx-target="#content_window" hx-trigger="click" hx-swap="innerHTML">Next &raquo;</button>
+    </div>
 </span>
 <span class="d-block">
     <a hx-get="/file_listing?current_path={{ current_path }}" hx-target="#listing-div" hx-swap="innerHTML">

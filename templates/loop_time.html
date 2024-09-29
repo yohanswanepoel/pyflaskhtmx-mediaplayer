@@ -1,16 +1,16 @@
-<form>
-    <span style="color: aliceblue;">Loop Time (0 = no loop):</span> 
+    <label class="m-2" style="color: aliceblue;">Loop Time (0 = no loop):</label>
     <input 
-    id="loop_time"
-    name="loop_time"
-    hx-post="/loop_time" 
-    hx-trigger="input changed delay:1000ms" 
-    hx-target="#looptime_bar"
-    hx-swap="innerHTML" 
-    type="text" 
-    placeholder="5" aria-label="Loop Time" value="{{ loop_time }}">
-    
-</form>
+        id="loop_time"
+        name="loop_time"
+        hx-post="/loop_time" 
+        hx-trigger="input changed delay:1000ms" 
+        hx-target="#looptime_bar"
+        hx-swap="innerHTML" 
+        type="text" 
+        class="input-sm"
+        placeholder="5" aria-label="Loop Time" value="{{ loop_time }}">
+
+
 {% if loop_time|int > 0 %}
 <script>
     htmx.ajax('GET', '/next_file', {target:'#content_window', swap:'innerHTML'})
