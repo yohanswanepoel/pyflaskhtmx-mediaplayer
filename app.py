@@ -23,6 +23,7 @@ g_current_path = "/"
 g_file_list = []
 g_loop_time = 5
 g_current_file = ""
+g_last_played = ""
 
 @app.route("/")
 def index():
@@ -50,8 +51,22 @@ def play_next_file():
     global g_file_list
     global g_current_file
     if g_current_file != "":
-        next_file = utils.find_next_item(g_file_list, g_current_file)
+        next_file = utils.find_next_item(g_file_list, g_current_file)    
+    else: # PLAY the first file if exists
+        next_file = utils.get_first_playable_item(g_file_list)
+    
+    if next_file is None:
+        return "Watch this space ... "
+    else:
         return play_file_return(next_file['path'], next_file['id'])
+
+@app.route("/previous_file")
+def play_previous_file():
+    global g_file_list
+    global g_last_played, g_current_file
+    if g_last_played != "":
+        previous_file = utils.find_previous_item(g_file_list, g_current_file)
+        return play_file_return(previous_file['path'], previous_file['id'])
     else:
         return "Watch this space ... "
 
@@ -59,6 +74,13 @@ def play_file_return(request_path, file_id):
     global g_current_file
     global window_height
     global g_loop_time
+    global g_last_played
+
+    if (g_last_played == ""):
+        g_last_played = file_id
+    else: 
+        g_last_played = g_current_file
+
     g_current_file = file_id
     if request_path.endswith(image_suffixes):
         img = Image.open(request_path) 
@@ -83,8 +105,6 @@ def loop_time():
         form_loop_time = request.values.get('loop_time')
         g_loop_time = form_loop_time
     return render_template("loop_time.html", loop_time = g_loop_time)
-    
-
 
 @app.route("/file_listing", methods=['POST','GET'])
 def get_file_listing():

@@ -9,7 +9,8 @@
        hx-indicator=".htmx-indicator"
        value="{{ filter_str }}"
        id="filter"> 
-    | <a class="btn-small" hx-get="/next_file" hx-target="#content_window" hx-swap="innerHTML">Play Next</a> 
+    | <a class="btn-small" hx-get="/previous_file" hx-target="#content_window" hx-trigger="click" hx-swap="innerHTML">Prev</a>
+    | <a class="btn-small" hx-get="/next_file" hx-target="#content_window" hx-trigger="click" hx-swap="innerHTML">Next</a>
 </span>
 <span class="d-block">
     <a hx-get="/file_listing?current_path={{ current_path }}" hx-target="#listing-div" hx-swap="innerHTML">
@@ -18,7 +19,7 @@
 
 <div style="width: 380px; overflow-y: scroll; height:100%" class="overflow-auto">
     <ul id="file_list" class="list-group">
-            <li class="list-group-item bg-grey" ><a hx-get="/file_listing?current_path={{ parent_path }}" hx-target="#listing-div" hx-swap="innerHTML">/parent directory..</a> 
+            <li class="list-group-item bg-grey"  hx-get="/file_listing?current_path={{ parent_path }}" hx-target="#listing-div" hx-swap="innerHTML" >..
             </li>
     {% for file in files %}
         {% if file.isfile %}

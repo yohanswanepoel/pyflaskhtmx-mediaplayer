@@ -19,6 +19,21 @@ def get_file_size(file_path):
     else:
         return f"{size_bytes / (1024 * 1024 * 1024):.2f} GB"
 
+def get_first_playable_item(listing):
+    for item in listing:
+        if item['isfile']:
+            return item
+    return None
+
+def find_previous_item(listing, previous_id):
+    last_item_found = None
+    for item in listing:
+        if item['id'] == previous_id:
+            return last_item_found
+        if item['isfile']:
+            last_item_found = item
+    return last_item_found    
+
 def find_next_item(listing, current_id):
     # Create a list of just the ids
     found = False
